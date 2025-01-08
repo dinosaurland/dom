@@ -1,0 +1,21 @@
+{
+    "name": "@dinosaur/dom",
+    "version": "0.1.0",
+    "license": "MIT",
+    "exports": {
+        ".": "./mod.ts"
+    },
+    "tasks": {
+        "example": "deno run -A --watch=example/index.ts ./scripts/runExample.ts",
+        "fetchElements": "deno run -A ./scripts/fetchElements.ts"
+    },
+    "compilerOptions": {
+        "lib": ["dom", "esnext"]
+    },
+    "imports": {
+        "@dinosaur/state": "jsr:@dinosaur/state@^0.2.2"
+    },
+    "publish": {
+        "exclude": ["example", "scripts"]
+    }
+}
