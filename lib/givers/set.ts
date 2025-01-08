@@ -5,7 +5,7 @@ type DeepPartial<T> = {
     [K in keyof T]?: DeepPartialValue<T[K]>;
 };
 
-export function give<E extends HTMLElement>(this: E, assignable: DeepPartial<E>) {
+export function set<E extends HTMLElement>(this: E, assignable: DeepPartial<E>) {
     deepAssign(this, assignable);
 }
 

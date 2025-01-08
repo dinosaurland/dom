@@ -1,0 +1,38 @@
+{
+  "version": "4",
+  "specifiers": {
+    "jsr:@quentinadam/assert@~0.1.10": "0.1.10",
+    "jsr:@quentinadam/require@~0.1.4": "0.1.4",
+    "jsr:@quentinadam/uint8array-extension@~0.1.5": "0.1.5",
+    "jsr:@quentinadam/zip@*": "0.1.4",
+    "jsr:@std/yaml@*": "1.0.5"
+  },
+  "jsr": {
+    "@quentinadam/assert@0.1.10": {
+      "integrity": "623eb01c4eb8bbe6420abcbc06792dbd5ca4301c270ac04b3745deac099f70df"
+    },
+    "@quentinadam/require@0.1.4": {
+      "integrity": "ef2a475d3fc241817470e540bd892ac23520d620ffb23b7796c940df31391c72",
+      "dependencies": [
+        "jsr:@quentinadam/assert"
+      ]
+    },
+    "@quentinadam/uint8array-extension@0.1.5": {
+      "integrity": "d7ccf8c8841947c7410c2db3249eb88a77bc1677b2a1c945971b8ead57e725b4",
+      "dependencies": [
+        "jsr:@quentinadam/assert"
+      ]
+    },
+    "@quentinadam/zip@0.1.4": {
+      "integrity": "d6a2ebafae4358d495dfbb80d7ac7494d6ed81132902a8d9b1943b9313487a15",
+      "dependencies": [
+        "jsr:@quentinadam/assert",
+        "jsr:@quentinadam/require",
+        "jsr:@quentinadam/uint8array-extension"
+      ]
+    },
+    "@std/yaml@1.0.5": {
+      "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+    }
+  }
+}
