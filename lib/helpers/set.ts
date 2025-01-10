@@ -32,8 +32,8 @@ async function assignState<T, K extends keyof T>(
     state: State<T[K]>
 ) {
     object[key] = state.value;
-    using values = state.watch();
-    for await (const value of values) {
+    while (true) {
+        const value = await state.next();
         try {
             object[key] = value;
         } catch (_) {
