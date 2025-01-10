@@ -59,5 +59,3 @@ export function elementFactory<E extends HTMLElement>(
     });
     return creator;
 }
-
-Input.set({ type: 'text' });
