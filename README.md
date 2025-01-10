@@ -30,3 +30,6 @@ const app = Div.set({ id: 'app' })(
         textContent: count.derive(i => `Count: ${i}`)
     })(),
 );
+
+document.body.appendChild(app);
+```

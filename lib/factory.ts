@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import * as givers from './givers/all.ts';
+import { Input } from "./elements.ts";
+import * as helpers from './helpers/all.ts';
 
 /**
  * A function that creates an `HTMLElement` with the given tag name and actions.
@@ -14,37 +15,49 @@ import * as givers from './givers/all.ts';
  * document.body.appendChild(element);
  * ```
  */
-export type ElementCreator<E extends HTMLElement> =
-    & ((...children: (HTMLElement | string)[]) => E)
-    & { [K in keyof Givers]: GiverWrapper<E, Givers[K]> };
+// export type ElementCreator<E extends HTMLElement> =
+//     & ((...children: (HTMLElement | string)[]) => E)
+//     & { [K in keyof Helpers]: HelperWrapper<E, Helpers[K]> };
+export type ElementCreator<E extends HTMLElement> = {
+    (...children: (HTMLElement | string)[]): E;
+    set: HelperWrapper<E, typeof helpers.set<E>>;
+};
 
 /**
  * A collection of functions that can be used to modify an element.
  */
-export type Givers = typeof givers;
+export type Helpers = typeof helpers;
 
 /**
  * A function that wraps a giver to return a new `ElementCreator`.
  */
-export type GiverWrapper<
+export type HelperWrapper<
     E extends HTMLElement,
-    G extends (this: E, ...args: any[]) => void
-> = G extends (this: E, ...args: infer A) => void ? (...args: A) => ElementCreator<E> : never;
+    H extends (element: E) => (...args: any[]) => void
+> = H extends (element: E) => (...args: infer A) => void 
+    ? (...args: A) => ElementCreator<E> 
+    : never;
 
-export function elementFactory<E extends HTMLElement>(tag: string, ...actions: ((element: E) => void)[]): ElementCreator<E> {
+
+export function elementFactory<E extends HTMLElement>(
+    tag: string,
+    ...actions: ((element: E) => void)[]
+): ElementCreator<E> {
     const creator = ((...children: (HTMLElement | string)[]) => {
         const element = document.createElement(tag) as E;
         actions.forEach(action => action(element));
         element.append(...children);
         return element;
     }) as ElementCreator<E>;
-    const giverKeys = Object.keys(givers) as (keyof Givers)[];
+    const giverKeys = Object.keys(helpers) as (keyof Helpers)[];
     giverKeys.forEach(key => {
-        const giver = givers[key];
-        // @ts-ignore - It works
+        const helper = helpers[key];
         creator[key] = ((...args) => {
-            return elementFactory(tag, ...actions, element => giver.call(element, ...args));
-        });
+            //@ts-ignore - It's fine, I promise
+            return elementFactory(tag, ...actions, element => helper(element)(...args));
+        }) as HelperWrapper<E, Helpers[keyof Helpers]>;
     });
     return creator;
 }
+
+Input.set({ type: 'text' });

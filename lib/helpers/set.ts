@@ -1,12 +1,12 @@
-import { State } from "jsr:@dinosaur/state@^0.2.2";
+import { State } from "@dinosaur/state";
 
 type DeepPartialValue<T> = T extends Record<string | number | symbol, unknown> ? DeepPartial<T> : (T | State<T>);
 type DeepPartial<T> = {
     [K in keyof T]?: DeepPartialValue<T[K]>;
 };
 
-export function set<E extends HTMLElement>(this: E, assignable: DeepPartial<E>) {
-    deepAssign(this, assignable);
+export function set<E extends HTMLElement>(element: E) {
+    return (assignable: DeepPartial<E>) => deepAssign(element, assignable);
 }
 
 function deepAssign<T>(
@@ -31,9 +31,13 @@ async function assignState<T, K extends keyof T>(
     key: K,
     state: State<T[K]>
 ) {
-    object[key] = await state.value;
-    using stream = state.watch();
-    for await (const value of stream) {
-        object[key] = value;
+    object[key] = state.value;
+    using values = state.watch();
+    for await (const value of values) {
+        try {
+            object[key] = value;
+        } catch (_) {
+            return;
+        }
     }
 }
