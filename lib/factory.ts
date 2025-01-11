@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import { Input } from "./elements.ts";
 import * as helpers from './helpers/all.ts';
 
 /**
@@ -15,9 +14,6 @@ import * as helpers from './helpers/all.ts';
  * document.body.appendChild(element);
  * ```
  */
-// export type ElementCreator<E extends HTMLElement> =
-//     & ((...children: (HTMLElement | string)[]) => E)
-//     & { [K in keyof Helpers]: HelperWrapper<E, Helpers[K]> };
 export type ElementCreator<E extends HTMLElement> = {
     (...children: (HTMLElement | string)[]): E;
     set: HelperWrapper<E, typeof helpers.set<E>>;
@@ -33,8 +29,8 @@ export type Helpers = typeof helpers;
  */
 export type HelperWrapper<
     E extends HTMLElement,
-    H extends (element: E) => (...args: any[]) => void
-> = H extends (element: E) => (...args: infer A) => void 
+    H extends (element: E, ...args: any[]) => void
+> = H extends (element: E, ...args: infer A) => void 
     ? (...args: A) => ElementCreator<E> 
     : never;
 
@@ -53,8 +49,7 @@ export function elementFactory<E extends HTMLElement>(
     giverKeys.forEach(key => {
         const helper = helpers[key];
         creator[key] = ((...args) => {
-            //@ts-ignore - It's fine, I promise
-            return elementFactory(tag, ...actions, element => helper(element)(...args));
+            return elementFactory(tag, ...actions, element => helper(element, ...args));
         }) as HelperWrapper<E, Helpers[keyof Helpers]>;
     });
     return creator;
