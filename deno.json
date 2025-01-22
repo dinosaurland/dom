@@ -2,10 +2,7 @@
     "name": "@dinosaur/dom",
     "version": "0.1.7",
     "license": "MIT",
-    "exports": {
-        ".": "./mod.ts",
-        "./elements": "./lib/elements.ts"
-    },
+    "exports": "./mod.ts",
     "tasks": {
         "fetchElements": "deno run -A ./scripts/fetchElements.ts"
     },
