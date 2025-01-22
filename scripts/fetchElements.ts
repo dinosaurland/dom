@@ -30,7 +30,6 @@ await Deno.remove(tempDir, { recursive: true });
 
 let code = 
 `import { elementFactory, type ElementCreator } from "./factory.ts";
-export type { ElementCreator, Givers, GiverWrapper } from "./factory.ts";
 `
 
 for (const { tag, reference, isDeprecated, isExperimental } of elements) {

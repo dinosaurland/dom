@@ -1,5 +1,4 @@
 import { elementFactory, type ElementCreator } from "./factory.ts";
-export type { ElementCreator, Helpers, HelperWrapper } from "./factory.ts";
 
 /**
  * Creates a `a` element.
