@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import helpers, { type Helpers } from './helpers/index.ts';
+export { type Helpers } from './helpers/index.ts';
 
 /**
  * A function that creates an `HTMLElement` with the given tag name and actions.
